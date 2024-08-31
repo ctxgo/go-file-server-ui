@@ -1,0 +1,120 @@
+<template>
+  <div style="width: 100%; height: 100%;">
+    <v-chart :option="chartOptions" style="width: 100%; height: 100%;" autoresize />
+  </div>
+</template>
+
+<script>
+import { isEqual } from 'lodash'
+import VChart from '@/components/Charts/VChart'
+import { formatBytes } from '@/utils/format'
+
+export default {
+  components: {
+    VChart
+  },
+  props: {
+    memoryInfo: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      chartOptions: {
+        title: {
+          text: '内存使用情况',
+          left: 'center',
+          top: 'top',
+          textStyle: {
+            fontSize: 16
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function(params) {
+            return `${params.name}: ${params.data.formattedValue} (${params.percent}%)`
+          }
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'right',
+          data: [] // 初始化为空，将在 updateChartData 中更新
+        },
+        series: [
+          {
+            name: '内存使用情况',
+            type: 'pie',
+            radius: ['25%', '50%'], // 设置内外半径，形成环形图
+            label: {
+              formatter: function(params) {
+                return `${params.name}: ${Math.round(params.percent)}%\n(${params.data.formattedValue})`
+              },
+              position: 'outside'
+            },
+            labelLine: {
+              length: 10,
+              length2: 10
+            },
+            data: [] // 数据将通过 updateChartData 更新
+          }
+        ],
+        graphic: [
+          {
+            type: 'group',
+            left: 'center',
+            top: 'center',
+            children: [
+              {
+                type: 'text',
+                left: 'center',
+                top: 'center',
+                style: {
+                  text: 'asda', // 文本将在 updateChartData 中更新
+                  textAlign: 'center',
+                  fill: '#000',
+                  fontSize: 14,
+                  fontWeight: 'bold'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  watch: {
+    memoryInfo: {
+      deep: true,
+      handler(newVal, oldVal) {
+        if (isEqual(newVal, oldVal)) {
+          return
+        }
+        this.updateChartData(newVal)
+      }
+    }
+  },
+  methods: {
+    updateChartData(memoryInfo) {
+      // 获取磁盘信息
+      const usedFormatted = formatBytes(memoryInfo.used)
+      const freeFormatted = formatBytes(memoryInfo.free)
+      const totalFormatted = formatBytes(memoryInfo.total)
+
+      // 更新图表数据
+
+      this.chartOptions.series[0].data = [
+        { value: memoryInfo.used, name: '已使用', formattedValue: usedFormatted },
+        { value: memoryInfo.free, name: '剩余', formattedValue: freeFormatted }
+      ]
+
+      // 确保图例数据与系列数据一致
+      this.chartOptions.legend.data = ['已使用', '剩余']
+
+      // 更新图形文本
+      this.chartOptions.graphic[0].children[0].style.text = `总内存\n${totalFormatted}`
+    }
+  }
+}
+</script>
+
