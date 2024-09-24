@@ -67,6 +67,9 @@ export default {
     },
     // 默认激活的菜单
     activeMenu() {
+      if (this.routers.length === 0) {
+        return
+      }
       const path = this.$route.path
       let activePath = this.routers[0].path
       if (path.lastIndexOf('/') > 0) {

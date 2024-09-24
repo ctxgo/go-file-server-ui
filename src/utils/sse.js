@@ -32,10 +32,10 @@ const sseService = {
             if (response.ok) {
               console.log(`SSE Connection opened for ${endpoint}`)
             } else {
-              Message({
-                message: 'sse连接异常',
-                type: 'error'
-              })
+              // Message({
+              //   message: 'sse连接异常',
+              //   type: 'error'
+              // })
               console.error(`Failed to open connection for ${endpoint}`, response.status)
             }
           },
@@ -54,10 +54,10 @@ const sseService = {
             }
           },
           onerror: error => {
-            Message({
-              message: 'sse内部错误',
-              type: 'error'
-            })
+            // Message({
+            //   message: 'sse内部错误',
+            //   type: 'error'
+            // })
             console.error(`SSE Error from ${endpoint}:`, error)
           },
           onclose: () => {
