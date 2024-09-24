@@ -68,8 +68,12 @@ export function resetFs() {
 
 export function getDownloadUrl(path) {
   path = makePath(path)
+  const currentUrl = window.location.href
   return request({
     url: '/api/v1/fsu' + path,
+    headers: {
+      'Referer': currentUrl
+    },
     method: 'get'
   })
 }

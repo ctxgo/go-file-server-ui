@@ -101,7 +101,7 @@
               border
               :default-sort="{prop: 'type', order: 'ascending'}"
               @selection-change="handleSelectionChange"
-              @sort-change="handleSortChang"
+              @sort-change="handleSortChange"
             >
               <el-table-column type="selection" width="45" align="center" />
 
@@ -125,11 +125,12 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column label="类型" prop="type" width="70" :show-overflow-tooltip="true" />
-              <el-table-column label="修改时间" prop="mtime" width="150" :show-overflow-tooltip="true" />
-              <el-table-column label="大小" prop="size" width="80" :show-overflow-tooltip="true" />
+              <el-table-column label="类型" prop="type" width="70" align="center" :show-overflow-tooltip="true" />
+              <el-table-column label="修改时间" prop="mtime" width="155" align="center" :show-overflow-tooltip="true" />
+              <el-table-column label="大小" prop="size" width="80" align="center" :show-overflow-tooltip="true" />
 
               <el-table-column
+                align="center"
                 label="操作"
                 width="270"
 
@@ -308,7 +309,7 @@ export default {
       // 总条数
       total: 0,
       // 文件表格数据
-      fsList: null,
+      fsList: [],
       // 弹出层标题
       title: '',
       // 是否显示弹出层

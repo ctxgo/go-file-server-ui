@@ -53,7 +53,20 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* has no token*/
-
+    if (to.path === '/login/callback') {
+      try {
+        await store.dispatch('user/loginCallback', to.query)
+        // 使用 replace: true 替换当前历史记录，移除 token 参数
+        next({ path: '/', replace: true })
+        return
+      } catch (error) {
+        // remove token and go to login page to re-login
+        // await store.dispatch('user/resetToken')
+        Message.error(error || 'Has Error')
+        // next(`/login?redirect=${to.path}`)
+        NProgress.done()
+      }
+    }
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()

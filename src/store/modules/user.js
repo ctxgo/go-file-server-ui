@@ -2,6 +2,7 @@ import { login, logout, getAccess, refreshtoken } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import storage from '@/utils/storage'
+import { loginCallback } from '@/api/login'
 
 const state = {
   token: getToken(),
@@ -114,6 +115,20 @@ const actions = {
       commit('SET_TOKEN', '')
       removeToken()
       resolve()
+    })
+  },
+
+  // dex login callback
+  loginCallback({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      loginCallback(data).then(response => {
+        const { token } = response.data
+        commit('SET_TOKEN', token)
+        setToken(token)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
     })
   },
 

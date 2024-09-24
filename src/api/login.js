@@ -8,3 +8,24 @@ export function getCodeImg() {
   })
 }
 
+export function getConfig() {
+  return request({
+    url: '/api/v1/config',
+    method: 'get'
+  })
+}
+
+export function getDexAuthUrl() {
+  return request({
+    url: '/api/v1/login/dex',
+    method: 'get'
+  })
+}
+
+export function loginCallback(query) {
+  return request({
+    url: '/api/v1/login/callback',
+    params: query,
+    method: 'get'
+  })
+}

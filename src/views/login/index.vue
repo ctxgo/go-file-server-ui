@@ -27,9 +27,24 @@
         <img src="@/assets/logo/fileserver.png" alt="File Server Logo" class="img">
         <p class="title">FileServer</p>
       </div>
+
       <div class="login-border">
         <div class="login-main">
           <div class="login-title">用户登录</div>
+          <!-- LDAP 登录按钮，仅在 ldapEnabled 为 true 时显示 -->
+          <el-button
+            v-if="ldapEnabled"
+            type="info"
+            round
+            style="width: 100%; padding: 15px 20px; margin-bottom: 8px"
+            @click="handleLdapLogin"
+          >
+            <span>LDAP 登 录</span>
+          </el-button>
+          <!-- 分隔线部分 -->
+          <div v-if="ldapEnabled" class="divider">
+            <span>or</span>
+          </div>
           <el-form
             ref="loginForm"
             :model="loginForm"
@@ -38,6 +53,7 @@
             autocomplete="on"
             label-position="left"
           >
+
             <el-form-item prop="username">
               <span class="svg-container">
                 <i class="el-icon-user" />
@@ -127,12 +143,13 @@
             <el-button
               :loading="loading"
               type="primary"
-              style="width: 100%; padding: 12px 20px; margin-bottom: 30px"
+              style="width: 100%; padding: 12px 20px; margin-bottom: 15px"
               @click.native.prevent="handleLogin"
             >
               <span v-if="!loading">登 录</span>
               <span v-else>登 录 中...</span>
             </el-button>
+
           </el-form>
         </div>
       </div>
@@ -181,7 +198,7 @@
 </template>
 
 <script>
-import { getCodeImg } from '@/api/login'
+import { getCodeImg, getConfig, getDexAuthUrl } from '@/api/login'
 import moment from 'moment'
 import SocialSign from './components/SocialSignin'
 
@@ -192,6 +209,7 @@ export default {
     return {
       codeUrl: '',
       cookiePassword: '',
+      ldapEnabled: false,
       refreshParticles: true,
       loginForm: {
         username: '',
@@ -257,6 +275,11 @@ export default {
   methods: {
     systemSetting() {
       document.title = 'fileServer'
+      getConfig().then((res) => {
+        if (res.code === 1000) {
+          this.ldapEnabled = res.data.ldapEnabled
+        }
+      })
     },
     getCurrentTime() {
       this.timer = setInterval((_) => {
@@ -316,6 +339,16 @@ export default {
           return false
         }
       })
+    },
+    handleLdapLogin() {
+      getDexAuthUrl().then((res) => {
+        if (res.code === 1000) {
+          window.location.href = res.data
+        } else {
+          this.msgError(res.msg)
+        }
+      })
+      // loginDex()
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
@@ -550,7 +583,7 @@ $cursor: #fff;
   display: -ms-flexbox;
   display: flex;
   border-left: none;
-  border-top-right-radius: 5px;
+  border-top-right-radius:5px;
   border-bottom-right-radius: 5px;
   color: #fff;
   background-color: hsla(0, 0%, 100%, 0.9);
@@ -682,5 +715,34 @@ $light_gray: #eee;
       width: 100%;
     }
   }
+}
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 5px 0; /* 根据需要调整上下间距 */
+  padding: 10px 0;
+
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px; /* 分隔线的高度 */
+  background-color: #dcdfe6; /* 分隔线的颜色，可根据主题调整 */
+}
+
+.divider::before {
+  margin-right: 10px; /* 分隔线与文字之间的间距 */
+}
+
+.divider::after {
+  margin-left: 10px; /* 分隔线与文字之间的间距 */
+}
+
+.divider span {
+  color: #606266; /* 文字颜色，可根据主题调整 */
+  font-size: 16px; /* 文字大小，可根据需要调整 */
 }
 </style>
