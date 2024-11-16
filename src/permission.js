@@ -34,7 +34,15 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { roles } = (await store.dispatch('user/getAccess')).data
+          const response = await store.dispatch('user/getAccess')
+
+          const roles = response?.data?.roles // 安全获取 roles
+          if (!roles || roles.length === 0) {
+            // 如果 roles 不存在，停止执行任何逻辑
+            console.warn('No roles found. Doing nothing.')
+            NProgress.done() // 停止进度条
+            return
+          }
 
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)

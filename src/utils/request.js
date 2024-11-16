@@ -112,7 +112,7 @@ service.interceptors.response.use(
       })
       return
     }
-    console.log('err' + error) // for debug
+    console.log('err: ' + error) // for debug
 
     Message({
       message: error.message,
