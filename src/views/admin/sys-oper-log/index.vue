@@ -102,8 +102,8 @@
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.status=='2'" type="success">{{ statusFormat(scope.row,scope.row.status) }}</el-tag>
-              <el-tag v-if="scope.row.status=='1'" type="danger">{{ statusFormat(scope.row,scope.row.status) }}</el-tag>
+              <el-tag v-if="scope.row.status=='2'" type="danger">{{ statusFormat(scope.row,scope.row.status) }}</el-tag>
+              <el-tag v-if="scope.row.status=='1'" type="success">{{ statusFormat(scope.row,scope.row.status) }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作日期" prop="operTime" width="160">
@@ -163,8 +163,8 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="操作状态：">
-                  <div v-if="form.status === '2'">正常</div>
-                  <div v-else-if="form.status === '1'">关闭</div>
+                  <div v-if="form.status === '1'">正常</div>
+                  <div v-else-if="form.status === '2'">失败</div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -205,7 +205,7 @@ export default {
       // 是否显示弹出层
       open: false,
       // 类型数据字典
-      statusOptions: [{ label: '正常', value: '2' }, { label: '关闭', value: '1' }],
+      statusOptions: [{ label: '正常', value: '1' }, { label: '失败', value: '2' }],
       // 日期范围
       dateRange: [],
       // 表单参数

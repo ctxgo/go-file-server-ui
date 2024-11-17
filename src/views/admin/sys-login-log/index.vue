@@ -164,7 +164,7 @@ export default {
       // 类型数据字典
       typeOptions: [],
       sysloginlogList: [],
-      statusOptions: [{ label: '正常', value: '2' }, { label: '关闭', value: '1' }],
+      statusOptions: [{ label: '登录成功', value: '1' }, { label: '登录失败', value: '2' }],
       // 关系表类型
 
       // 查询参数
