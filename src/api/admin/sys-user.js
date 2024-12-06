@@ -117,6 +117,37 @@ export function updateUserPwd(userId, oldPassword, newPassword) {
   })
 }
 
+export function genUserToken(userId) {
+  const data = {
+    user_id: userId
+  }
+  return request({
+    url: '/api/v1/user/token',
+    method: 'post',
+    data: data
+  })
+}
+
+export function getUserToken(userId) {
+  const query = { user_id: userId }
+  return request({
+    url: '/api/v1/user/token',
+    method: 'get',
+    params: query
+  })
+}
+
+export function delUserToken(_ids) {
+  const data = {
+    ids: _ids
+  }
+  return request({
+    url: '/api/v1/user/token',
+    method: 'delete',
+    data: data
+  })
+}
+
 // 用户头像上传
 export function uploadAvatar(data) {
   return request({

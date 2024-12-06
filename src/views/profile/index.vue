@@ -52,6 +52,9 @@
               <el-tab-pane label="修改密码" name="resetPwd">
                 <resetPwd :user="user" />
               </el-tab-pane>
+              <el-tab-pane label="个人令牌" name="userToken">
+                <userToken :user="user" />
+              </el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>
@@ -64,11 +67,12 @@
 import userAvatar from './userAvatar'
 import userInfo from './userInfo'
 import resetPwd from './resetPwd'
+import userToken from './userToken'
 import { getUserProfile } from '@/api/admin/sys-user'
 
 export default {
   name: 'Profile',
-  components: { userAvatar, userInfo, resetPwd },
+  components: { userAvatar, userInfo, resetPwd, userToken },
   data() {
     return {
       user: {},

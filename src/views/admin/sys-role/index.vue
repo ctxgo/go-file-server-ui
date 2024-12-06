@@ -707,7 +707,7 @@ export default {
       if (selectedNodes.length && this.newPermissions.length) {
         selectedNodes.forEach(node => {
           this.form.fsRoles.push({
-            path: node.fullPath || node.name, // 根据你的数据结构，你可能需要 fullPath 或 name
+            path: node.fullPath === '/' ? '/' : node.fullPath.slice(1), // 根据你的数据结构，你可能需要 fullPath 或 name
             permissions: [...this.newPermissions]
           })
         })
